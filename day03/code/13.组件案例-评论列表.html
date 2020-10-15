@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap.css">
+</head>
+
+<body>
+    <div id ="app"> 
+        
+
+        <cmt-box @func="loadComments"></cmt-box>
+
+        <ul class="list-group">
+            <li class="list-group-item" v-for="item in list" :key="item.id">
+                <span class="badge">评论人：{{ item.user }}</span>
+                {{ item.content }}
+            </li>
+        </ul>
+        
+        
+    </div>
+    <template id="tmpl">
+        <div>
+            <div class="for-group">
+                <label>评论人：</label>
+                <input type="text" class="form-control" v-model="user">
+            </div>
+            <div class="for-group">
+                <label>评论内容：</label>
+                <textarea class="form-control" v-model="content"></textarea>
+            </div>
+            <div class="for-group">
+                <input type="button" value="发表评论" class="btn btn-primary" @click="postComment">
+            </div>
+        </div>
+    </template>
+
+    <script>
+
+        var commentBox = {
+            data(){
+                return {
+                    user: '',
+                    content: ''
+                }
+            },
+            template: '#tmpl',
+            methods: {
+                postComment(){ // 发表评论的方法
+                    /*
+                        分析：
+                            1、评论数据存在哪儿------> 存放到 localStorage 中
+                            2、先组织出一个最新的评论数据对象
+                            3、想办法，把二中 得到的评论对象，保存到localStorage 中
+                                3.1、localStorage 只支持存放字符串数据，要先调用 JSON .stringify
+                                3.2、在保存最新的数据前，要先获取到之前的数据字符串，转化为一个数组对象，然后将最新的数据push 到这个数组中
+                                3.3、若获取到的localStorage字符串中内容不存在，则 可以返回一个 '[]' 让JSON.parse 去转换
+                                3.4、把最新的列表数组再次调用 JSON.stringify转为 数组字符串，然后调用 localStorage()
+                    */
+                    var comment = {id: Date.now(), user: this.user, content: this.content}
+                    //    从localStorage获取到的所有评论
+                    var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+                    list.unshift(comment)
+                    //    重新保存最新的 评论数据
+                    localStorage.setItem('cmts',JSON.stringify(list))
+
+                    this.user = this.content = ''
+
+                    this.$emit('func')
+
+                }
+            }
+        }
+
+
+     //创建Vue实例,得到 ViewModel
+     var vm = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                {id: Date.now(),user: '李白',content: '天生我材必有用'},
+                {id: Date.now(),user: '江小北',content: '劝君更进一杯酒'},
+                {id: Date.now(),user: '圣诞节',content: '北风卷地白草折'},
+            ]
+        },
+        created(){
+            this.loadComments()
+        },
+        methods: {
+            loadComments(){ // 从本地的localStorage中加载评论列表
+                var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+                this.list = list
+            }
+        },
+        components: {
+            'cmt-box': commentBox
+        }
+     });
+    </script>
+</body>
+
+</html>

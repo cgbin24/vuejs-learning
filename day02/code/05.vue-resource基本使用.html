@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <!-- 注意：vue-resource 依赖于vue.js 所以要置于其后 -->
+    <!-- this.$http.jsonp -->
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+
+
+
+    <div id ="app">
+        <input type="button" value="get 请求" @click="getInfo">
+        <input type="button" value="post 请求" @click="postInfo">
+        <input type="button" value="jsonp 请求" @click="jsonpInfo">
+
+        <!-- <input type="button" value="动起来" @click="myAnimation"> -->
+        <!-- 使用transition 将需要过滤的元素包裹起来 -->
+        <!-- <transition name="fade">
+            <div v-show="isshow">动画</div>
+        </transition> -->
+
+    </div>
+
+    <script>
+     //创建Vue实例,得到 ViewModel
+     var vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            getInfo(){  // 发起get请求
+                // 当发起get请求之后，通过[.then]来设置成功的回调函数，失败的回调函数可以不写
+                this.$http.get('http://vue.studyit.io/api/getlunbo').then(function (result){
+                    // 通过 result.body 拿到服务器返回的成功的数据
+                    console.log(result.body)
+                })
+            },
+            postInfo(){ // 发起post 请求
+                // 手动发起的Post请求，默认没有表单格式，所以，有的服务器处理不了 
+                // 通过post方法的第三个参数，{ emulateJSON: true} 设置 提交的内容类型 为普通类表单格式
+                
+                this.$http.post('http://vue.studyit.io/api.post', {},{ emulateJSON: true}).then(function (result){
+                    
+                    console.log(result.body)
+                })
+            },
+            jsonpInfo(){  // 发起jsonp请求
+                // 当发起get请求之后，通过[.then]来设置成功的回调函数，失败的回调函数可以不写
+                this.$http.jsonp('http://vue.studyit.io/api/jsonp').then(result => {
+                    // 通过 result.body 拿到服务器返回的成功的数据
+                    console.log(result.body)
+                })
+            },
+        }
+     });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <tr v-for="item in list | filterBy serchName in 'name'">
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.ctime}}</td>
+        <td>
+            <a href="#" @click.prevent="del(item.id)">删除</a>
+        </td>
+    </tr>
+    
+    
+    <hr> 输入筛选名称：
+    <input type="text" v-model="serchName">
+    
+    
+    
+    
+    <tbody>
+        <tr v-for="item in search(serchName)">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.ctime}}</td>
+            <td>
+                <a href="#" @click.prevent="del(item.id)">删除</a>
+            </td>
+        </tr>
+    </tbody>
+
+
+    <td>{{item.ctime | dataFormat('yyyy-mm-dd')}}</td>
+    
+    
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            methods: {
+
+                search(name){
+                    return this.list.filter(x => {
+                        return x.name.indexOf(name) != -1;
+                    });
+                },
+        
+                filter: {
+                    dataFormat(input,pattern = ""){
+                        var dt = new Date(input)
+                        // 获取年月日
+                        var y = dt.getFullYear();
+                        var m = (dt.getMonth() + 1).toString().padStart(2,'0');
+                        var d = dt.getDate.toString().padStart(2,'0');
+
+                        // 如果传递进来的字符串类型，转为小写之后，等于 yyyy-mm-dd,那么久返回 年-月-日
+                        // 否则，就返回 年-月-日 时：分：秒
+                        if(pattern.toLowerCase() === 'yyyy-mm-dd'){
+                            return `${y}-${m}-${d}`;
+                        }else{
+                            return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+                        }
+                    }
+                }
+            }
+        })
+
+
+    </script>
+</body>
+</html>

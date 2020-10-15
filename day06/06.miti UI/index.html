@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/css/bootstrap.css">
+    <link rel="stylesheet" href="./src/lib/mui/css/mui.css">
+</head>
+<body>
+    <div id="app">
+        <mt-button type="default">default</mt-button>
+        <mt-button type="primary">primary</mt-button>
+        <mt-button type="danger">danger</mt-button>
+        <mybtn>12345</mybtn>
+
+        <button type="button" class="mui-btn mui-btn-royal">
+            紫色
+        </button>
+
+        <div class="mui-content">
+			<div class="mui-content-padded">
+				<p style="text-indent: 22px;">
+					这是mui集成百度ECharts的图表示例，ECharts的详细用法及 API 请参考其官方网站: <a id='echarts' data-url='http://echarts.baidu.com'>http://echarts.baidu.com</a>
+				</p>
+			</div>
+			<div class="mui-content-padded">
+				<h5>柱图示例</h5>
+				<div class="chart" id="barChart"></div>
+				<h5>线图示例</h5>
+				<div class="chart" id="lineChart"></div>
+				<h5>饼图示例</h5>
+				<div class="chart" id="pieChart"></div>
+			</div>
+		</div>
+    </div>
+</body>
+</html>
